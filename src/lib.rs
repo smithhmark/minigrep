@@ -5,9 +5,21 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)
         .expect("Oh no, file problem!");
 
-    println!("Contents:\n{}", contents);
+    for line in search(&config.query, &contents) {
+        println!("{}", line);
+    }
 
     Ok(()) //indiomatic: means "this function called for side-effects"
+}
+
+fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    let mut results = vec![];
+    for line in contents.lines() {
+        if line.contains(query) {
+            results.push(line);
+        }
+    }
+    results
 }
 
 #[derive(PartialEq, Debug)]
@@ -30,6 +42,17 @@ impl Config {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn one_result() {
+        let query = "duct";
+        let contents = "\
+Rust:
+safe, fast, productive.
+Pick three.";
+
+        assert_eq!(vec!["safe, fast, productive."], search(query, contents));
+    }
 
     #[test]
     fn parse_cfg() {
