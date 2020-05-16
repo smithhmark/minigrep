@@ -10,6 +10,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(()) //indiomatic: means "this function called for side-effects"
 }
 
+#[derive(PartialEq, Debug)]
 pub struct Config {
     pub query: String,
     pub filename: String,
@@ -23,5 +24,28 @@ impl Config {
         let query = args[1].clone();
         let filename = args[2].clone();
         Ok(Config {query, filename})
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn dummy_test() {
+        println!("just a NOP test");
+    }
+
+    #[test]
+    fn parse_cfg() {
+        let args = [
+            "prg".to_string(), 
+            "query".to_string(),
+            "filename".to_string()];
+        let query = "query".to_string();
+        let filename = "filename".to_string();
+        let expected = Config { query, filename};
+        let got = Config::new(&args[..]).unwrap();
+        assert_eq!(expected, got)
     }
 }
