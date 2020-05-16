@@ -32,11 +32,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn dummy_test() {
-        println!("just a NOP test");
-    }
-
-    #[test]
     fn parse_cfg() {
         let args = [
             "prg".to_string(), 
