@@ -37,6 +37,7 @@ fn search_case_insenitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
 pub struct Config {
     pub query: String,
     pub filename: String,
+    pub case_sensitive: bool,
 }
 
 impl Config {
@@ -46,7 +47,7 @@ impl Config {
         }
         let query = args[1].clone();
         let filename = args[2].clone();
-        Ok(Config {query, filename})
+        Ok(Config {query, filename, case_sensitive: false})
     }
 }
 
@@ -87,7 +88,7 @@ Duct tape!";
             "filename".to_string()];
         let query = "query".to_string();
         let filename = "filename".to_string();
-        let expected = Config { query, filename};
+        let expected = Config { query, filename, case_sensitive: false};
         let got = Config::new(&args[..]).unwrap();
         assert_eq!(expected, got)
     }
